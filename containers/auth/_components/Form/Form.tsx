@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from "react";
-import { Box, Text, Button } from "@chakra-ui/react";
+import { Box, Text, Link } from "@chakra-ui/react";
 import FormRegister from "./FormRegister";
 import FormLogin from "./FormLogin";
 
@@ -23,20 +23,16 @@ const Form = () => {
         {formType === "login" ? (
           <Text textAlign="center">
             Dont have an account?{" "}
-            <Text
-              color="teal"
-              display="inline-block"
-              onClick={() => handleChangeFormType("register")}
-            >
+            <Link color="teal" onClick={() => handleChangeFormType("register")}>
               Sign up
-            </Text>
+            </Link>
           </Text>
         ) : (
           <Text textAlign="center">
             Have an account?{" "}
-            <Text display="inline-block" color="teal" onClick={() => handleChangeFormType("login")}>
+            <Link color="teal" onClick={() => handleChangeFormType("login")}>
               Login
-            </Text>
+            </Link>
           </Text>
         )}
       </Box>
