@@ -17,11 +17,19 @@ export const POST = async (req: NextApiRequest, res: NextApiResponse) => {
       },
     });
 
-    return {
+    return res.status(200).json({
       message: "Success created User",
-    };
+    });
   } catch (error) {
     console.log(error);
     return res.status(400).end();
   }
 };
+
+export default function handler(req: NextApiRequest, res: NextApiResponse) {
+  if (req.method === "POST") {
+    return POST(req, res);
+  }
+
+  return res.status(400).end();
+}

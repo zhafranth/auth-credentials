@@ -1,11 +1,22 @@
 import React from "react";
 import { Box, Text, Input, Button } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
+import { signIn } from "next-auth/react";
 
 const FormLogin = () => {
   const { register, handleSubmit } = useForm();
 
-  const onSubmit = handleSubmit((data) => console.log(data));
+  const onSubmit = handleSubmit(async (data) => {
+    try {
+      const result = await signIn("credentials", {
+        username: data.username,
+        password: data.password,
+      });
+      console.log(result);
+    } catch (error) {
+      console.log(error);
+    }
+  });
   return (
     <>
       <Box mt="1rem" py="2rem">

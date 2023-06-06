@@ -1,11 +1,18 @@
 import React from "react";
 import { Box, Text, Input, Button } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
+import { register as postRegister } from "../../_networks";
 
 const FormRegister = () => {
   const { register, handleSubmit } = useForm();
 
-  const onSubmit = handleSubmit((data) => console.log(data));
+  const onSubmit = handleSubmit(async (data) => {
+    const payload = { ...data, role: "ADMIN" };
+    const response = await postRegister(payload);
+
+    console.log(response);
+  });
+
   return (
     <>
       <Box mt="1rem" py="2rem">
