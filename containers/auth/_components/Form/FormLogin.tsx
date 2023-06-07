@@ -7,15 +7,12 @@ const FormLogin = () => {
   const { register, handleSubmit } = useForm();
 
   const onSubmit = handleSubmit(async (data) => {
-    try {
-      const result = await signIn("credentials", {
-        username: data.username,
-        password: data.password,
-      });
-      console.log(result);
-    } catch (error) {
-      console.log(error);
-    }
+    await signIn("credentials", {
+      username: data.username,
+      password: data.password,
+      redirect: true,
+      callbackUrl: "/dashboard",
+    });
   });
   return (
     <>

@@ -6,9 +6,6 @@ import { useSession } from "next-auth/react";
 const Form = dynamic(() => import("./_components/Form"));
 
 const Auth = () => {
-  const { data: session, status } = useSession();
-  console.log("Session", session);
-  console.log("Status", status);
   return (
     <Grid templateColumns="repeat(2,1fr)">
       <GridItem width="100%" h="100vh" bg="blue.100">

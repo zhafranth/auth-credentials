@@ -9,8 +9,6 @@ const FormRegister = () => {
   const onSubmit = handleSubmit(async (data) => {
     const payload = { ...data, role: "ADMIN" };
     const response = await postRegister(payload);
-
-    console.log(response);
   });
 
   return (

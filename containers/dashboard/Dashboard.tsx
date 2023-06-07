@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Box, Image, Text } from "@chakra-ui/react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
@@ -6,12 +6,12 @@ import { useRouter } from "next/router";
 const Dashboard = () => {
   const router = useRouter();
   const { data: session } = useSession();
-
-  if (typeof window === "undefined") return null;
-
-  if (!session) {
-    router.push("/");
-  }
+  console.log("session:", session);
+  // useEffect(() => {
+  //   if (!session) {
+  //     router.replace("/");
+  //   }
+  // }, [router, session]);
 
   return (
     <Box

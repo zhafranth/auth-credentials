@@ -14,34 +14,39 @@ export const authOptions: NextAuthOptions = {
         password: { label: "password", type: "password" },
       },
       async authorize(credentials) {
-        // if (!credentials?.username || !credentials?.password) {
-        //   throw new Error("Invalid Credentials");
-        // }
-        // const user = await prisma.user.findUnique({
-        //   where: {
-        //     username: credentials?.username,
-        //   },
-        // });
+        if (!credentials?.username || !credentials?.password) {
+          throw new Error("Invalid Credentials");
+        }
+        const user = await prisma.user.findUnique({
+          where: {
+            username: credentials?.username,
+          },
+        });
 
-        // if (!user || !user?.password) {
-        //   throw new Error("Invalid Credentials");
-        // }
+        if (!user || !user?.password) {
+          throw new Error("Invalid Credentials");
+        }
 
-        // const isCorrectPassword = await bcrypt.compare(credentials.password, user.password);
+        const isCorrectPassword = await bcrypt.compare(credentials.password, user.password);
 
-        // if (!isCorrectPassword) {
-        //   throw new Error("Invalid credentials");
-        // }
+        if (!isCorrectPassword) {
+          throw new Error("Invalid credentials");
+        }
 
-        // FIXME: HANYAA NAMPILIN NAME DAN EMAIL SELAIN ITU TDK DITMAPILKAN
-        return {
-          name: "agus",
-          role: "admin",
-          email: "Agus",
-        };
+        return user;
       },
     }),
   ],
+  callbacks: {
+    async jwt({ token, user }) {
+      return { ...token, ...user };
+    },
+    async session({ session, token }) {
+      session.user = token as any;
+
+      return session;
+    },
+  },
   debug: process.env.NODE_ENV === "development",
   session: {
     strategy: "jwt",
@@ -50,10 +55,9 @@ export const authOptions: NextAuthOptions = {
     secret: process.env.NEXTAUTH_JWT_SECRET,
   },
   secret: process.env.NEXTAUTH_SECRET,
-  // pages: {
-  //   signIn: "/",
-  //   error: "/",
-  // },
+  pages: {
+    signIn: "/",
+  },
 };
 
 export default NextAuth(authOptions);
