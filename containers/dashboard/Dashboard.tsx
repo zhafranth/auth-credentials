@@ -1,17 +1,22 @@
-import React, { useEffect } from "react";
-import { Box, Image, Text } from "@chakra-ui/react";
-import { useSession } from "next-auth/react";
-import { useRouter } from "next/router";
+import React, { useCallback, useEffect, useState } from "react";
+import { Box, Image, Text, Button } from "@chakra-ui/react";
+import axios from "axios";
+import { signOut } from "next-auth/react";
 
 const Dashboard = () => {
-  const router = useRouter();
-  const { data: session } = useSession();
-  console.log("session:", session);
-  // useEffect(() => {
-  //   if (!session) {
-  //     router.replace("/");
-  //   }
-  // }, [router, session]);
+  const [data, setData] = useState<{ username: string }>();
+
+  const handleGetCurrentUser = useCallback(async () => {
+    const response = await axios("/api/current", {
+      method: "GET",
+    });
+
+    setData(response.data);
+  }, []);
+
+  useEffect(() => {
+    handleGetCurrentUser();
+  }, [handleGetCurrentUser]);
 
   return (
     <Box
@@ -29,10 +34,19 @@ const Dashboard = () => {
           src="https://hype4.academy/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fbg2%402x.e27efe19.webp&w=1920&q=75"
         />
       </Box>
-      <Box position="relative">
+      <Box
+        position="relative"
+        display="flex"
+        justifyContent="center"
+        rowGap="1rem"
+        flexDir="column"
+      >
         <Text fontSize="2xl">
-          Hello from another <span style={{ fontWeight: "700" }}>world</span>
+          Hello, {data?.username} from another <span style={{ fontWeight: "700" }}>world</span>
         </Text>
+        <Button onClick={() => signOut()} color="teal">
+          Sign Out
+        </Button>
       </Box>
     </Box>
   );
